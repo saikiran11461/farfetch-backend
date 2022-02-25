@@ -1,11 +1,11 @@
 const express = require("express");
 
-const connect = require("./configs/db");
+const connect = require("./src/configs/db");
 
-const  {register,login}=require("./controllers/auth.user.controller")
-const userController = require("./controllers/user.controller");
+const  {register,login}=require("./src/controllers/auth.user.controller")
+const userController = require("./src/controllers/user.controller");
 // const userProduct = require("./models/user.product");
-const productController=require("./controllers/product.controller")
+const productController=require("./src/controllers/product.controller")
 
 
 const app = express();
