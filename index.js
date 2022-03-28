@@ -17,7 +17,10 @@ app.post("/login" ,login)
 app.use("/product", productController);
 
 app.use("/users", userController);
-
+app.set("view engine","hbs")
+app.get("/",(req,res)=>{
+  res.render("index")
+})
 
 const PORT=process.env.PORT || 2345
 
