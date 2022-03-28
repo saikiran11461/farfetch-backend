@@ -5,37 +5,50 @@ const User=require("../models/user.model")
 
 const newToken = (user)=>{
     return jwt.sign({user},"process.env.SECRET_KEY",)}
-const register=async (req,res)=>{
 
+    const register=("",async(req,res)=>{
+        try{
+         
+    
+    let  user= await User.findOne({email:req.body.email})
+    if(user){
+        return res.json({ status: 'error', error: 'Invalid username' })
+    }else{
+        const token=newToken(user)
+     user=await User.create(req.body )
+     console.log('User created successfully: ', user)
+    
+    }
+        }
+        
+        catch(err){
+            return res.send(err.message)
+        }
+        res.json({ status: 'ok' })
+    })
+
+
+
+const login=("/",async(req,res)=>{
     try{
-        let user=await User.findOne({email :req.body.email}).lean().exec()
-         if (user)
-         return res.status(500).send("already have an account")
-      
-         user =await User.create(req.body)
+        let  user= await User.findOne({email:req.body.email})
+        if(!user){
+            return res.json({ status: 'error', error: 'Invalid password or email' })
+        }else{
+            
+         const match=user.checkPassword(req.body.password)
+         if(!match){
+            return res.json({ status: 'error', error: 'Invalid password or email' })
+         }
+         const token=newToken(user)
 
-         const token = newToken(user)
-         return res.send({user,token})
-
-          
-    }catch(err){
-        res.status(500).send(err.message)
+         return res.json({ status: 'ok', data: token })
     }
 }
-
-const login =async (req, res) =>{
-       try{
-           let user=await User.findOne({email:req.body.email})
-           if(!user) return  res.status(500).send("please check your email or password")
-           const match =user.checkPassword(req.body.password)
-           if(!match)
-           
-return res.send( res.status(500).send("please check your email or password"))
-
-const token = newToken(user)
-return res.send({user,token})
-    }catch(err){
-        res.status(500).send(err.message)
+    
+    catch(err){
+        return res.send(err.message)
     }
-}
+    
+})
 module.exports={register,login}

@@ -14,7 +14,7 @@ app.use(express.json());
 app.post("/register",register)
 app.post("/login" ,login)
 
-app.use("/product", productController);
+app.use("/products", productController);
 
 app.use("/users", userController);
 app.set("view engine","hbs")

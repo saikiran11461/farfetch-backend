@@ -7,8 +7,7 @@ router.post("",async(req,res)=>{
     try{
      
         const product=await Product.create(req.body)
-      
-        return res.send(product)
+        return res.json({ status: 'ok', data: product})
         
     }catch(err){
         return res.status(500).send(err.message)
