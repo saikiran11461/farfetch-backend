@@ -1,5 +1,5 @@
 const express = require("express");
-
+var cors = require('cors')
 const connect = require("./src/configs/db");
 
 const  {register,login}=require("./src/controllers/auth.user.controller")
@@ -9,6 +9,8 @@ const productController=require("./src/controllers/product.controller")
 
 
 const app = express();
+app.use(cors({ origin:"*"}))
+
 
 app.use(express.json());
 app.post("/register",register)
